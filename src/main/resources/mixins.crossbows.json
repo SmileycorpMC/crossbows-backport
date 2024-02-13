@@ -1,0 +1,19 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "net.smileycorp.crossbows.mixin",
+  "refmap": "mixins.crossbows.refmap.json",
+  "mixins": [
+    "MixinBootstrap",
+    "MixinDamageSource",
+	"MixinEntityArrow",
+    "MixinEntityFireworkRocket",
+    "MixinEntityLivingBase",
+    "MixinItemFirework"
+  ],
+  "client": [
+    "MixinItemRenderer",
+    "MixinModelBiped",
+    "MixinRenderSnowball"
+  ],
+  "server": []
+}

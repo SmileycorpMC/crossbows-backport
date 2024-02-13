@@ -1,0 +1,40 @@
+package net.smileycorp.crossbows.common;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.item.Item;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.smileycorp.crossbows.common.enchantment.EnchantmentMultishot;
+import net.smileycorp.crossbows.common.enchantment.EnchantmentPiercing;
+import net.smileycorp.crossbows.common.enchantment.EnchantmentQuickCharge;
+import net.smileycorp.crossbows.common.item.ItemCrossbow;
+
+@EventBusSubscriber(modid = Constants.MODID)
+public class CrossbowsContent {
+	
+	public static final Item CROSSBOW = new ItemCrossbow();
+
+	public static final EnumEnchantmentType CROSSBOW_ENCHANTMENTS = EnumHelper.addEnchantmentType("crossbow", item -> item == CROSSBOW);
+
+	public static Enchantment QUICK_CHARGE = new EnchantmentQuickCharge();
+	public static Enchantment MULTISHOT = new EnchantmentMultishot();
+	public static Enchantment PIERCING = new EnchantmentPiercing();
+
+	@SubscribeEvent
+	public static void registerItems(RegistryEvent.Register<Item> event) {
+		event.getRegistry().register(CROSSBOW);
+	}
+
+	@SubscribeEvent
+	public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
+		IForgeRegistry<Enchantment> registry = event.getRegistry();
+		registry.register(QUICK_CHARGE);
+		registry.register(MULTISHOT);
+		registry.register(PIERCING);
+	}
+	
+}
