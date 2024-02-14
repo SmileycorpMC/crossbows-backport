@@ -245,9 +245,7 @@ public class ItemCrossbow extends Item {
 	private static void onCrossbowShot(World world, EntityLivingBase entity, ItemStack stack) {
 		if (entity instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP)entity;
-			if (!world.isRemote) {
-				//CriteriaTriggers.SHOT_CROSSBOW.trigger(serverEntityPlayer, p_40908_);
-			}
+			if (!world.isRemote) CrossbowsContent.SHOT_CROSSBOW.trigger(player);
 			player.addStat(StatList.getObjectUseStats(stack.getItem()));
 		}
 		clearChargedProjectiles(stack);

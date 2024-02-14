@@ -128,8 +128,14 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
     }
     
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;sqrt(D)F"))
-    public void onUpdate(CallbackInfo callback) {
+    public void onUpdate$sqrt(CallbackInfo callback) {
         if (isAttachedToEntity()) return;
+        if (collided) {
+            world.setEntityState(this, (byte)17);
+            dealExplosionDamage();
+            setDead();
+            return;
+        }
         Vec3d vec3d1 = new Vec3d(posX, posY, posZ);
         Vec3d vec3d = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
         RayTraceResult raytraceresult = world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
@@ -184,5 +190,5 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
         }
         return entity;
     }
-
+    
 }

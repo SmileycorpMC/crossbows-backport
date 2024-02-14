@@ -2,7 +2,7 @@
   "parent": "minecraft:adventure/root",
   "display": {
     "icon": {
-      "item": "raids:crossbow",
+      "item": "crossbows:crossbow",
       "nbt": "{Damage:0}"
     },
     "title": {
@@ -18,12 +18,8 @@
   },
   "criteria": {
     "shot_crossbow": {
-      "trigger": "raids:shot_crossbow",
-      "conditions": {
-        "item": {
-          "item": "raids:crossbow"
-        }
-      }
+      "trigger": "crossbows:shot_crossbow",
+      "conditions": {}
     }
   },
   "requirements": [

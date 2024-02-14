@@ -16,6 +16,9 @@ import net.smileycorp.crossbows.common.item.ItemCrossbow;
 @EventBusSubscriber(modid = Constants.MODID)
 public class CrossbowsContent {
 	
+	public static final CrossbowsCriterionTrigger SHOT_CROSSBOW = new CrossbowsCriterionTrigger("shot_crossbow");
+	public static final CrossbowsCriterionTrigger PIERCED_ENTITIES = new CrossbowsCriterionTrigger("pierced_entities");
+	
 	public static final Item CROSSBOW = new ItemCrossbow();
 
 	public static final EnumEnchantmentType CROSSBOW_ENCHANTMENTS = EnumHelper.addEnchantmentType("crossbow", item -> item == CROSSBOW);

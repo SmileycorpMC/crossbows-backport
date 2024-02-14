@@ -1,8 +1,8 @@
 {
-  "parent": "hordes:adventure/ol_betsy",
+  "parent": "crossbows:ol_betsy",
   "display": {
     "icon": {
-      "item": "raids:crossbow",
+      "item": "crossbows:crossbow",
       "nbt": "{Damage:0}"
     },
     "title": {
@@ -21,10 +21,8 @@
   },
   "criteria": {
     "arbalistic": {
-      "trigger": "minecraft:killed_by_crossbow",
-      "conditions": {
-        "unique_entity_types": 5
-      }
+      "trigger": "crossbows:pierced_entities",
+      "conditions": {}
     }
   },
   "requirements": [
