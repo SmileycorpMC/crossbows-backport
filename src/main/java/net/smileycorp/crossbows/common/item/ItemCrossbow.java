@@ -86,6 +86,7 @@ public class ItemCrossbow extends Item {
 	}
 
 	private static boolean tryLoadProjectiles(EntityLivingBase entity, ItemStack stack) {
+		System.out.println(stack);
 		int i = EnchantmentHelper.getEnchantmentLevel(CrossbowsContent.MULTISHOT, stack);
 		int j = i == 0 ? 1 : 3;
 		boolean creative = entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode;
@@ -109,7 +110,7 @@ public class ItemCrossbow extends Item {
 			ItemStack itemstack;
 			if (!dontConsume && !creative && !p_40866_) {
 				itemstack = ammo.splitStack(1);
-				if (ammo.isEmpty() && entity instanceof EntityPlayer) ((EntityPlayer)entity).inventory.deleteStack(stack);
+				if (ammo.isEmpty() && entity instanceof EntityPlayer) ((EntityPlayer)entity).inventory.deleteStack(ammo);
 			} else itemstack = ammo.copy();
 			addChargedProjectile(stack, itemstack);
 			return true;
@@ -217,6 +218,7 @@ public class ItemCrossbow extends Item {
 	}
 
 	public static void performShooting(World world, EntityLivingBase entity, ItemStack stack, float p_40892_, float p_40893_) {
+		System.out.println(stack);
 		if (entity instanceof EntityPlayer && ForgeEventFactory.onArrowLoose(stack, world, (EntityPlayer) entity, 1, true) < 0) return;
 		List<ItemStack> list = getChargedProjectiles(stack);
 		float[] afloat = getShotPitches(entity.getRNG());
