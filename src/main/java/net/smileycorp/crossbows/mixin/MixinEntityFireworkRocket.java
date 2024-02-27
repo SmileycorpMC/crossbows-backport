@@ -1,14 +1,17 @@
 package net.smileycorp.crossbows.mixin;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -36,9 +39,12 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
     @Shadow public abstract boolean isAttachedToEntity();
     
     private static final DataParameter<Boolean> SHOT_AT_ANGLE = EntityDataManager.createKey(EntityFireworkRocket.class, DataSerializers.BOOLEAN);
+    
+    private List<Entity> ignoredEntities = Lists.newArrayList();
 
     private UUID ownerUUID;
     private Entity cachedOwner;
+    private boolean leftOwner;
 
     public MixinEntityFireworkRocket(World worldIn) {
         super(worldIn);
@@ -118,6 +124,15 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
         if (compound.hasKey("ShotAtAngle")) dataManager.set(SHOT_AT_ANGLE, compound.getBoolean("ShotAtAngle"));
     }
     
+    @Inject(method = "onUpdate", at = @At("HEAD"))
+    public void onUpdate$Head(CallbackInfo ci) {
+       if (!leftOwner && getOwner() != null) {
+           for(EntityLivingBase entity : world.getEntitiesWithinAABB(EntityLivingBase.class, getEntityBoundingBox().grow(1), EntitySelectors.NOT_SPECTATING))
+               if (entity.getLowestRidingEntity() == getOwner().getLowestRidingEntity()) return;
+           leftOwner = true;
+       }
+    }
+    
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/item/EntityFireworkRocket;move(Lnet/minecraft/entity/MoverType;DDD)V"))
     public void onUpdate$move(CallbackInfo ci) {
         if (isShotAtAngle()) {
@@ -172,10 +187,12 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
     protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
         Entity entity = null;
         List<Entity> list = world.getEntitiesInAABBexcluding(this,
-                getEntityBoundingBox().expand(motionX, motionY, motionZ).grow(1.0D), EntityArrow.ARROW_TARGETS);
+                getEntityBoundingBox().expand(motionX, motionY, motionZ).grow(1.0D),
+                Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, e -> e.canBeCollidedWith() && leftOwner));
         double d0 = 0.0D;
         for (int i = 0; i < list.size(); ++i) {
             Entity entity1 = list.get(i);
+            if (list.contains(entity)) continue;
             if (entity1 != getOwner()) {
                 AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
                 RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
@@ -188,6 +205,7 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
                 }
             }
         }
+        
         return entity;
     }
     
