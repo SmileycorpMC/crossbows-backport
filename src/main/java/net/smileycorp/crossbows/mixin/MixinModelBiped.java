@@ -57,12 +57,10 @@ public class MixinModelBiped {
             }
             ItemStack mainhand = player.getHeldItemMainhand();
             ItemStack offhand = player.getHeldItemOffhand();
-            if (offhand.getItem() == CrossbowsContent.CROSSBOW && ItemCrossbow.isCharged(offhand)) {
+            if (offhand.getItem() == CrossbowsContent.CROSSBOW && ItemCrossbow.isCharged(offhand))
                 CrossbowAnimator.animateCrossbowHold(bipedRightArm, bipedLeftArm, bipedHead, player.getPrimaryHand() == EnumHandSide.LEFT);
-            }
-            if (mainhand.getItem() == CrossbowsContent.CROSSBOW && ItemCrossbow.isCharged(mainhand)) {
+            if (mainhand.getItem() == CrossbowsContent.CROSSBOW && ItemCrossbow.isCharged(mainhand))
                 CrossbowAnimator.animateCrossbowHold(bipedRightArm, bipedLeftArm, bipedHead, player.getPrimaryHand() == EnumHandSide.RIGHT);
-            }
         }
     }
     

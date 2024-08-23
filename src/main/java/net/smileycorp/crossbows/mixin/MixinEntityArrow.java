@@ -1,6 +1,8 @@
 package net.smileycorp.crossbows.mixin;
 
 import com.google.common.collect.Sets;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +16,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
@@ -77,17 +78,17 @@ public abstract class MixinEntityArrow extends Entity implements ICrossbowArrow 
         }
     }
     
-    @Redirect(method = "onHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/EntityArrow;setDead()V"))
-    public void onHit$setDead(EntityArrow instance) {
+    @WrapOperation(method = "onHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/EntityArrow;setDead()V"))
+    public void onHit$setDead(EntityArrow instance, Operation<Void> original) {
         if (getPierceLevel() > 0 && result != null && result.entityHit != null) {
             if (piercingIgnoreEntityIds == null) piercingIgnoreEntityIds = new IntOpenHashSet(5);
             if (piercedAndKilledEntities == null) piercedAndKilledEntities = Sets.newHashSetWithExpectedSize(5);
             if (piercingIgnoreEntityIds.size() >= getPierceLevel() + 1) {
-                setDead();
+                original.call(instance);
                 return;
             }
             piercingIgnoreEntityIds.add(result.entityHit.getEntityId());
-        } else setDead();
+        } else original.call(instance);
     }
     
     @Inject(method = "onHit", at = @At(value = "TAIL"))
