@@ -3,6 +3,7 @@ package net.smileycorp.crossbows.common;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.Item;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -40,4 +41,15 @@ public class CrossbowsContent {
 		registry.register(PIERCING);
 	}
 	
+	@SubscribeEvent
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		IForgeRegistry<SoundEvent> registry = event.getRegistry();
+		registry.register(Constants.CROSSBOW_LOADING_END);
+		registry.register(Constants.CROSSBOW_LOADING_MIDDLE);
+		registry.register(Constants.CROSSBOW_LOADING_START);
+		registry.register(Constants.CROSSBOW_QUICK_CHARGE_1);
+		registry.register(Constants.CROSSBOW_QUICK_CHARGE_2);
+		registry.register(Constants.CROSSBOW_QUICK_CHARGE_3);
+		registry.register(Constants.CROSSBOW_SHOOT);
+	}
 }
