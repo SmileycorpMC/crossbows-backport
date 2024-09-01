@@ -3,6 +3,8 @@ package net.smileycorp.crossbows.common.item;
 import com.google.common.collect.Lists;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentArrowDamage;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -12,6 +14,7 @@ import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
@@ -38,22 +41,24 @@ import java.util.List;
 import java.util.Random;
 
 public class ItemCrossbow extends Item {
-
+	
+	private final int drawSpeed;
 	private boolean startSoundPlayed = false;
 	private boolean midLoadSoundPlayed = false;
 	
-	public ItemCrossbow() {
-		setUnlocalizedName(Constants.name("Crossbow"));
-		setRegistryName(Constants.loc("Crossbow"));
+	public ItemCrossbow(String modid, String name, int durability, int drawSpeed) {
+		this.drawSpeed = drawSpeed;
+		setUnlocalizedName(modid + "." + name.replace("_", ""));
+		setRegistryName(new ResourceLocation(modid, "Crossbow"));
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.COMBAT);
-		setMaxDamage(465);
-		addPropertyOverride(Constants.loc("pull"), (stack, worldIn, entityIn) -> entityIn == null || isCharged(stack) ? 0.0F :
+		setMaxDamage(durability);
+		addPropertyOverride(new ResourceLocation(modid, "pull"), (stack, worldIn, entityIn) -> entityIn == null || isCharged(stack) ? 0.0F :
 				(float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / ((float)getChargeDuration(stack)));
-		addPropertyOverride(Constants.loc("pulling"), (stack, worldIn, entityIn) ->
+		addPropertyOverride(new ResourceLocation(modid, "pulling"), (stack, worldIn, entityIn) ->
 				entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack && !isCharged(stack) ? 1.0F : 0.0F);
-		addPropertyOverride(Constants.loc("charged"), (stack, worldIn, entityIn) -> isCharged(stack) ? 1 : 0);
-		addPropertyOverride(Constants.loc("firework"), (stack, worldIn, entityIn) -> containsChargedProjectile(stack, Items.FIREWORKS) ? 1 : 0);
+		addPropertyOverride(new ResourceLocation(modid, "charged"), (stack, worldIn, entityIn) -> isCharged(stack) ? 1 : 0);
+		addPropertyOverride(new ResourceLocation(modid, "firework"), (stack, worldIn, entityIn) -> containsChargedProjectile(stack, Items.FIREWORKS) ? 1 : 0);
 	}
 	
 	@Override
@@ -85,7 +90,7 @@ public class ItemCrossbow extends Item {
 		}
 	}
 
-	private static boolean tryLoadProjectiles(EntityLivingBase entity, ItemStack stack) {
+	private boolean tryLoadProjectiles(EntityLivingBase entity, ItemStack stack) {
 		int i = EnchantmentHelper.getEnchantmentLevel(CrossbowsContent.MULTISHOT, stack);
 		int j = i == 0 ? 1 : 3;
 		boolean creative = entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode;
@@ -102,7 +107,7 @@ public class ItemCrossbow extends Item {
 		return true;
 	}
 
-	private static boolean loadProjectile(EntityLivingBase entity, ItemStack stack, ItemStack ammo, boolean p_40866_, boolean creative) {
+	private boolean loadProjectile(EntityLivingBase entity, ItemStack stack, ItemStack ammo, boolean p_40866_, boolean creative) {
 		if (ammo.isEmpty()) return false;
 		else {
 			boolean dontConsume = creative && ammo.getItem() instanceof ItemArrow;
@@ -161,7 +166,7 @@ public class ItemCrossbow extends Item {
 		return getChargedProjectiles(stack).stream().anyMatch(proj -> proj.getItem() == item);
 	}
 
-	private static void shootProjectile(World world, EntityLivingBase entity, ItemStack stack, ItemStack ammo, float p_40900_, boolean p_40901_, float p_40902_, float p_40903_, float p_40904_) {
+	private void shootProjectile(World world, EntityLivingBase entity, ItemStack stack, ItemStack ammo, float p_40900_, boolean p_40901_, float p_40902_, float p_40903_, float p_40904_) {
 		if (world.isRemote) return;
 		boolean isFirework = ammo.getItem() == Items.FIREWORKS;
 		Entity projectile;
@@ -205,7 +210,8 @@ public class ItemCrossbow extends Item {
 		return vector3f;
 	}
 
-	private static EntityArrow getArrow(World world, EntityLivingBase entity, ItemStack crossbow, ItemStack ammo) {
+	private EntityArrow getArrow(World world, EntityLivingBase entity, ItemStack crossbow, ItemStack ammo) {
+		Enchantment
 		ItemArrow arrowitem = (ItemArrow) (ammo.getItem() instanceof ItemArrow ? ammo.getItem() : Items.ARROW);
 		EntityArrow arrow = arrowitem.createArrow(world, ammo, entity);
 		if (entity instanceof EntityPlayer) arrow.setIsCritical(true);
@@ -215,34 +221,36 @@ public class ItemCrossbow extends Item {
 		if (i > 0) crossbowArrow.setPierceLevel((byte)i);
 		return arrow;
 	}
-
+	
 	public static void performShooting(World world, EntityLivingBase entity, ItemStack stack, float p_40892_, float p_40893_) {
+		if (!(stack.getItem() instanceof ItemCrossbow)) return;
 		if (entity instanceof EntityPlayer && ForgeEventFactory.onArrowLoose(stack, world, (EntityPlayer) entity, 1, true) < 0) return;
+		ItemCrossbow crossbow = (ItemCrossbow) stack.getItem();
 		List<ItemStack> list = getChargedProjectiles(stack);
-		float[] afloat = getShotPitches(entity.getRNG());
+		float[] afloat = crossbow.getShotPitches(entity.getRNG());
 		for(int i = 0; i < list.size(); ++i) {
 			ItemStack itemstack = list.get(i);
 			boolean flag = entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode;
 			if (!itemstack.isEmpty()) {
-				if (i == 0) shootProjectile(world, entity, stack, itemstack, afloat[i], flag, p_40892_, p_40893_, 0.0F);
-				else if (i == 1) shootProjectile(world, entity, stack, itemstack, afloat[i], flag, p_40892_, p_40893_, -10.0F);
-				else if (i == 2) shootProjectile(world, entity, stack, itemstack, afloat[i], flag, p_40892_, p_40893_, 10.0F);
+				if (i == 0) crossbow.shootProjectile(world, entity, stack, itemstack, afloat[i], flag, p_40892_, p_40893_, 0.0F);
+				else if (i == 1) crossbow.shootProjectile(world, entity, stack, itemstack, afloat[i], flag, p_40892_, p_40893_, -10.0F);
+				else if (i == 2) crossbow.shootProjectile(world, entity, stack, itemstack, afloat[i], flag, p_40892_, p_40893_, 10.0F);
 			}
 		}
-		onCrossbowShot(world, entity, stack);
+		crossbow.onCrossbowShot(world, entity, stack);
 	}
 
-	private static float[] getShotPitches(Random rand) {
+	private float[] getShotPitches(Random rand) {
 		boolean flag = rand.nextBoolean();
 		return new float[]{1.0F, getRandomShotPitch(flag, rand), getRandomShotPitch(!flag, rand)};
 	}
 
-	private static float getRandomShotPitch(boolean flag, Random rand) {
+	private float getRandomShotPitch(boolean flag, Random rand) {
 		float f = flag ? 0.63F : 0.43F;
 		return 1.0F / (rand.nextFloat() * 0.5F + 1.8F) + f;
 	}
 
-	private static void onCrossbowShot(World world, EntityLivingBase entity, ItemStack stack) {
+	private void onCrossbowShot(World world, EntityLivingBase entity, ItemStack stack) {
 		if (entity instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP)entity;
 			if (!world.isRemote) CrossbowsContent.SHOT_CROSSBOW.trigger(player);
@@ -284,7 +292,8 @@ public class ItemCrossbow extends Item {
 
 	public static int getChargeDuration(ItemStack stack) {
 		int i =  EnchantmentHelper.getEnchantmentLevel(CrossbowsContent.QUICK_CHARGE, stack);
-		return i == 0 ? 25 : 25 - 5 * i;
+		int drawSpeed = stack.getItem() instanceof ItemCrossbow ? ((ItemCrossbow) stack.getItem()).drawSpeed : 25;
+		return drawSpeed - (int)((float)drawSpeed * 0.2f) * i;
 	}
 
 	private SoundEvent getStartSound(int quick_charge_level) {

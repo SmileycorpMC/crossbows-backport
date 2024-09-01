@@ -13,6 +13,7 @@ import net.smileycorp.crossbows.common.enchantment.EnchantmentMultishot;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentPiercing;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentQuickCharge;
 import net.smileycorp.crossbows.common.item.ItemCrossbow;
+import vazkii.quark.misc.item.ItemAncientTome;
 
 @EventBusSubscriber(modid = Constants.MODID)
 public class CrossbowsContent {
@@ -22,7 +23,7 @@ public class CrossbowsContent {
 	
 	public static final Item CROSSBOW = new ItemCrossbow();
 
-	public static final EnumEnchantmentType CROSSBOW_ENCHANTMENTS = EnumHelper.addEnchantmentType("crossbow", item -> item == CROSSBOW);
+	public static final EnumEnchantmentType CROSSBOW_ENCHANTMENTS = EnumHelper.addEnchantmentType("crossbow", item -> item instanceof ItemCrossbow);
 
 	public static Enchantment QUICK_CHARGE = new EnchantmentQuickCharge();
 	public static Enchantment MULTISHOT = new EnchantmentMultishot();
