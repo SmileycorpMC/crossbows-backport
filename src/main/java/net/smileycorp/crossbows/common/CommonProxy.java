@@ -11,7 +11,8 @@ import net.smileycorp.crossbows.common.item.FireworksDispenseBehaviour;
 public class CommonProxy {
 	
 	public void preInit(FMLPreInitializationEvent event) {
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.FIREWORKS, new FireworksDispenseBehaviour());
+		ConfigHandler.syncConfig(event);
+		if (ConfigHandler.dispenserFireworks) BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.FIREWORKS, new FireworksDispenseBehaviour());
 	}
 
 	public void init(FMLInitializationEvent event) {

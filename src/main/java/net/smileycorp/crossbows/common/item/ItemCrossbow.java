@@ -3,8 +3,6 @@ package net.smileycorp.crossbows.common.item;
 import com.google.common.collect.Lists;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentArrowDamage;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -14,7 +12,6 @@ import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
@@ -43,10 +40,12 @@ import java.util.Random;
 public class ItemCrossbow extends Item {
 	
 	private final int drawSpeed;
+	private final float damageMultiplier;
 	private boolean startSoundPlayed = false;
 	private boolean midLoadSoundPlayed = false;
 	
-	public ItemCrossbow(String modid, String name, int durability, int drawSpeed) {
+	public ItemCrossbow(String modid, String name, int durability, float damageMultiplier, int drawSpeed) {
+		this.damageMultiplier = damageMultiplier;
 		this.drawSpeed = drawSpeed;
 		setUnlocalizedName(modid + "." + name.replace("_", ""));
 		setRegistryName(new ResourceLocation(modid, "Crossbow"));
@@ -211,9 +210,9 @@ public class ItemCrossbow extends Item {
 	}
 
 	private EntityArrow getArrow(World world, EntityLivingBase entity, ItemStack crossbow, ItemStack ammo) {
-		Enchantment
 		ItemArrow arrowitem = (ItemArrow) (ammo.getItem() instanceof ItemArrow ? ammo.getItem() : Items.ARROW);
 		EntityArrow arrow = arrowitem.createArrow(world, ammo, entity);
+		arrow.setDamage(arrow.getDamage() * damageMultiplier);
 		if (entity instanceof EntityPlayer) arrow.setIsCritical(true);
 		ICrossbowArrow crossbowArrow = (ICrossbowArrow) arrow;
 		crossbowArrow.setShotFromCrossbow(true);

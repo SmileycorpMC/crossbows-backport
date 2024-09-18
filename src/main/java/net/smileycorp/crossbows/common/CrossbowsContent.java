@@ -13,7 +13,6 @@ import net.smileycorp.crossbows.common.enchantment.EnchantmentMultishot;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentPiercing;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentQuickCharge;
 import net.smileycorp.crossbows.common.item.ItemCrossbow;
-import vazkii.quark.misc.item.ItemAncientTome;
 
 @EventBusSubscriber(modid = Constants.MODID)
 public class CrossbowsContent {
@@ -21,7 +20,7 @@ public class CrossbowsContent {
 	public static final CrossbowsCriterionTrigger SHOT_CROSSBOW = new CrossbowsCriterionTrigger("shot_crossbow");
 	public static final CrossbowsCriterionTrigger PIERCED_ENTITIES = new CrossbowsCriterionTrigger("pierced_entities");
 	
-	public static final Item CROSSBOW = new ItemCrossbow();
+	public static Item CROSSBOW;
 
 	public static final EnumEnchantmentType CROSSBOW_ENCHANTMENTS = EnumHelper.addEnchantmentType("crossbow", item -> item instanceof ItemCrossbow);
 
@@ -31,6 +30,7 @@ public class CrossbowsContent {
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
+		CROSSBOW = new ItemCrossbow(Constants.MODID, "crossbow", ConfigHandler.durability,  ConfigHandler.damage, ConfigHandler.drawSpeed);
 		event.getRegistry().register(CROSSBOW);
 	}
 
