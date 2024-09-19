@@ -12,25 +12,25 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 public class Crossbows {
-	
-	private static Logger logger = LogManager.getLogger(Constants.NAME);
-	
-	@SidedProxy(clientSide = Constants.CLIENT, serverSide = Constants.SERVER)
-	public static CommonProxy proxy;
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-		proxy.preInit(event);
-	}
-	
-	@EventHandler
-	public void init(FMLInitializationEvent event){
-		proxy.init(event);
-	}
-	
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event){
-		proxy.postInit(event);
-	}
-	
+    
+    private static Logger logger = LogManager.getLogger(Constants.NAME);
+    
+    @SidedProxy(clientSide = Constants.CLIENT, serverSide = Constants.SERVER)
+    public static CommonProxy proxy;
+    
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        proxy.preInit(event);
+    }
+    
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.init(event);
+    }
+    
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        proxy.postInit(event);
+    }
+    
 }

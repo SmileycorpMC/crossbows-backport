@@ -13,27 +13,27 @@ import net.smileycorp.crossbows.common.CommonProxy;
 import net.smileycorp.crossbows.common.Constants;
 import net.smileycorp.crossbows.common.CrossbowsContent;
 
-@EventBusSubscriber(value = Side.CLIENT, modid= Constants.MODID)
+@EventBusSubscriber(value = Side.CLIENT, modid = Constants.MODID)
 public class ClientProxy extends CommonProxy {
-	
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
-	}
-	
-	@Override
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
-	}
-	
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
-	}
-	
-	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event) {
-		ModelLoader.setCustomModelResourceLocation(CrossbowsContent.CROSSBOW, 0, new ModelResourceLocation(Constants.loc("Crossbow"), "normal"));
-	}
-	
+    
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+    }
+    
+    @Override
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+    }
+    
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
+    }
+    
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        ModelLoader.setCustomModelResourceLocation(CrossbowsContent.CROSSBOW, 0, new ModelResourceLocation(Constants.loc("Crossbow"), "normal"));
+    }
+    
 }

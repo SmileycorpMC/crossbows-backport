@@ -13,21 +13,21 @@ import net.smileycorp.crossbows.common.item.ItemCrossbow;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientHandler {
-	
-	@SubscribeEvent
-	public static void renderHand(RenderSpecificHandEvent event) {
-		EnumHand hand = event.getHand();
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
-		if (player == null) return;
-		if (hand == EnumHand.MAIN_HAND) {
-			if (player.getActiveHand() != EnumHand.OFF_HAND) return;
-			if (player.getActiveItemStack().getItem() == CrossbowsContent.CROSSBOW) event.setCanceled(true);
-		}
-		else if (hand == EnumHand.OFF_HAND) {
-			if (player.getActiveHand() == EnumHand.MAIN_HAND && player.getActiveItemStack().getItem() == CrossbowsContent.CROSSBOW) event.setCanceled(true);
-			ItemStack main = player.getHeldItemMainhand();
-			if (main.getItem() == CrossbowsContent.CROSSBOW && ItemCrossbow.isCharged(main)) event.setCanceled(true);
-		}
-	}
-
+    
+    @SubscribeEvent
+    public static void renderHand(RenderSpecificHandEvent event) {
+        EnumHand hand = event.getHand();
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        if (player == null) return;
+        if (hand == EnumHand.MAIN_HAND) {
+            if (player.getActiveHand() != EnumHand.OFF_HAND) return;
+            if (player.getActiveItemStack().getItem() == CrossbowsContent.CROSSBOW) event.setCanceled(true);
+        } else if (hand == EnumHand.OFF_HAND) {
+            if (player.getActiveHand() == EnumHand.MAIN_HAND && player.getActiveItemStack().getItem() == CrossbowsContent.CROSSBOW)
+                event.setCanceled(true);
+            ItemStack main = player.getHeldItemMainhand();
+            if (main.getItem() == CrossbowsContent.CROSSBOW && ItemCrossbow.isCharged(main)) event.setCanceled(true);
+        }
+    }
+    
 }

@@ -1,29 +1,54 @@
 {
-	"item.crossbow.loading_end": {
-		"sounds": ["crossbows:item/crossbow/loading_end"],
-		"subtitle": "subtitles.crossbows.item.crossbow.load"
-	},
-	"item.crossbow.loading_middle": {
-		"sounds": ["crossbows:item/crossbow/loading_middle1", "crossbows:item/crossbow/loading_middle2", "crossbows:item/crossbow/loading_middle3", "crossbows:item/crossbow/loading_middle4"]
-	},
-	"item.crossbow.loading_start": {
-		"sounds": ["crossbows:item/crossbow/loading_start"],
-		"subtitle": "subtitles.crossbows.item.crossbow.charge"
-	},
-	"item.crossbow.loading_quick_charge_1": {
-		"sounds": ["crossbows:item/crossbow/quick_charge/quick1_1", "crossbows:item/crossbow/quick_charge/quick1_2", "crossbows:item/crossbow/quick_charge/quick1_3"],
-		"subtitle": "subtitles.crossbows.item.crossbow.charge"
-	},
-	"item.crossbow.loading_quick_charge_2": {
-		"sounds": ["crossbows:item/crossbow/quick_charge/quick2_1", "crossbows:item/crossbow/quick_charge/quick2_2", "crossbows:item/crossbow/quick_charge/quick2_3"],
-		"subtitle": "subtitles.crossbows.item.crossbow.charge"
-	},
-	"item.crossbow.loading_quick_charge_3": {
-		"sounds": ["crossbows:item/crossbow/quick_charge/quick3_1", "crossbows:item/crossbow/quick_charge/quick3_2", "crossbows:item/crossbow/quick_charge/quick3_3"],
-		"subtitle": "subtitles.crossbows.item.crossbow.charge"
-	},
-	"item.crossbow.shoot": {
-		"sounds": ["crossbows:item/crossbow/loading_shoot1", "crossbows:item/crossbow/shoot2", "crossbows:item/crossbow/shoot3"],
-		"subtitle": "subtitles.crossbows.item.crossbow.shoot"
-	}
+  "item.crossbow.loading_end": {
+    "sounds": [
+      "crossbows:item/crossbow/loading_end"
+    ],
+    "subtitle": "subtitles.crossbows.item.crossbow.load"
+  },
+  "item.crossbow.loading_middle": {
+    "sounds": [
+      "crossbows:item/crossbow/loading_middle1",
+      "crossbows:item/crossbow/loading_middle2",
+      "crossbows:item/crossbow/loading_middle3",
+      "crossbows:item/crossbow/loading_middle4"
+    ]
+  },
+  "item.crossbow.loading_start": {
+    "sounds": [
+      "crossbows:item/crossbow/loading_start"
+    ],
+    "subtitle": "subtitles.crossbows.item.crossbow.charge"
+  },
+  "item.crossbow.loading_quick_charge_1": {
+    "sounds": [
+      "crossbows:item/crossbow/quick_charge/quick1_1",
+      "crossbows:item/crossbow/quick_charge/quick1_2",
+      "crossbows:item/crossbow/quick_charge/quick1_3"
+    ],
+    "subtitle": "subtitles.crossbows.item.crossbow.charge"
+  },
+  "item.crossbow.loading_quick_charge_2": {
+    "sounds": [
+      "crossbows:item/crossbow/quick_charge/quick2_1",
+      "crossbows:item/crossbow/quick_charge/quick2_2",
+      "crossbows:item/crossbow/quick_charge/quick2_3"
+    ],
+    "subtitle": "subtitles.crossbows.item.crossbow.charge"
+  },
+  "item.crossbow.loading_quick_charge_3": {
+    "sounds": [
+      "crossbows:item/crossbow/quick_charge/quick3_1",
+      "crossbows:item/crossbow/quick_charge/quick3_2",
+      "crossbows:item/crossbow/quick_charge/quick3_3"
+    ],
+    "subtitle": "subtitles.crossbows.item.crossbow.charge"
+  },
+  "item.crossbow.shoot": {
+    "sounds": [
+      "crossbows:item/crossbow/loading_shoot1",
+      "crossbows:item/crossbow/shoot2",
+      "crossbows:item/crossbow/shoot3"
+    ],
+    "subtitle": "subtitles.crossbows.item.crossbow.shoot"
+  }
 }

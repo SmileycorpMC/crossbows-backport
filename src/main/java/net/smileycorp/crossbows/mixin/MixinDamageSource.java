@@ -35,18 +35,21 @@ public abstract class MixinDamageSource implements IFireworksDamage {
     
     @Inject(method = "getImmediateSource", at = @At("HEAD"), cancellable = true)
     public void getImmediateSource(CallbackInfoReturnable<Entity> callback) {
-        if ((Object)this == DamageSource.FIREWORKS && hasFireworksEntity()) callback.setReturnValue(getFireworksEntity());
+        if ((Object) this == DamageSource.FIREWORKS && hasFireworksEntity())
+            callback.setReturnValue(getFireworksEntity());
     }
     
     @Inject(method = "getTrueSource", at = @At("HEAD"), cancellable = true)
     public void getTrueSource(CallbackInfoReturnable<Entity> callback) {
-        if ((Object)this == DamageSource.FIREWORKS && hasFireworksEntity()) callback.setReturnValue(((IFireworksProjectile)getFireworksEntity()).getOwner());
+        if ((Object) this == DamageSource.FIREWORKS && hasFireworksEntity())
+            callback.setReturnValue(((IFireworksProjectile) getFireworksEntity()).getOwner());
     }
     
     @Inject(method = "getDeathMessage", at = @At("HEAD"), cancellable = true)
     public void getDeathMessage(EntityLivingBase entity, CallbackInfoReturnable<ITextComponent> callback) {
-        if ((Object)this == DamageSource.FIREWORKS && hasFireworksEntity() && ((IFireworksProjectile)getFireworksEntity()).getOwner() != entity) callback.setReturnValue(
-                new TextComponentTranslation("death.attack.crossbows.fireworks.player", entity, ((IFireworksProjectile)getFireworksEntity()).getOwner()));
+        if ((Object) this == DamageSource.FIREWORKS && hasFireworksEntity() && ((IFireworksProjectile) getFireworksEntity()).getOwner() != entity)
+            callback.setReturnValue(
+                    new TextComponentTranslation("death.attack.crossbows.fireworks.player", entity, ((IFireworksProjectile) getFireworksEntity()).getOwner()));
     }
     
 }

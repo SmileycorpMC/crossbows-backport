@@ -11,7 +11,7 @@ import net.smileycorp.crossbows.common.item.ItemCrossbow;
 import java.util.function.Consumer;
 
 public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends EntityAIBase {
-
+    
     private final T entity;
     private final Consumer<Boolean> chargeFunction;
     private final Runnable shootFunction;
@@ -21,7 +21,7 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
     private int seeTime;
     private int attackDelay;
     private int updatePathDelay;
-
+    
     public EntityAIAttackRangedCrossbow(T entity, double speed, float radius, Consumer<Boolean> chargeFunction, Runnable shootFunction) {
         this.entity = entity;
         this.speedModifier = speed;
@@ -30,13 +30,13 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
         this.shootFunction = shootFunction;
         setMutexBits(3);
     }
-
+    
     @Override
     public boolean shouldExecute() {
         return entity.getAttackTarget() != null && entity.getAttackTarget().isEntityAlive() &&
                 (entity.getHeldItemMainhand().getItem() == CrossbowsContent.CROSSBOW) || (entity.getHeldItemOffhand().getItem() == CrossbowsContent.CROSSBOW);
     }
-
+    
     public void resetTask() {
         super.resetTask();
         entity.setAttackTarget(null);
@@ -47,7 +47,7 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
             chargeFunction.accept(false);
         }
     }
-
+    
     @Override
     public void updateTask() {
         EntityLivingBase target = entity.getAttackTarget();
@@ -58,7 +58,7 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
             if (flag) seeTime++;
             else seeTime--;
             double d0 = entity.getDistanceSq(target);
-            boolean flag2 = (d0 > (double)this.attackRadiusSqr || this.seeTime < 5) && this.attackDelay == 0;
+            boolean flag2 = (d0 > (double) this.attackRadiusSqr || this.seeTime < 5) && this.attackDelay == 0;
             if (flag2) {
                 if (updatePathDelay-- <= 0) {
                     entity.getNavigator().tryMoveToEntityLiving(target, state == State.UNCHARGED ? this.speedModifier : this.speedModifier * 0.5D);
@@ -71,10 +71,11 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
             entity.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
             if (state == State.UNCHARGED) {
                 if (!flag2) {
-                    for (EnumHand hand : EnumHand.values()) if (entity.getHeldItem(hand).getItem() == CrossbowsContent.CROSSBOW) {
-                        entity.setActiveHand(hand);
-                        break;
-                    }
+                    for (EnumHand hand : EnumHand.values())
+                        if (entity.getHeldItem(hand).getItem() == CrossbowsContent.CROSSBOW) {
+                            entity.setActiveHand(hand);
+                            break;
+                        }
                     state = State.CHARGING;
                     chargeFunction.accept(true);
                 }
@@ -94,10 +95,11 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
             } else if (state == State.READY_TO_ATTACK && flag) {
                 performCrossbowAttack(1f);
                 ItemStack stack = ItemStack.EMPTY;
-                for (EnumHand hand : EnumHand.values()) if (entity.getHeldItem(hand).getItem() == CrossbowsContent.CROSSBOW) {
-                    stack = entity.getHeldItem(hand);
-                    break;
-                }
+                for (EnumHand hand : EnumHand.values())
+                    if (entity.getHeldItem(hand).getItem() == CrossbowsContent.CROSSBOW) {
+                        stack = entity.getHeldItem(hand);
+                        break;
+                    }
                 ItemCrossbow.setCharged(stack, false);
                 state = State.UNCHARGED;
             }
@@ -106,20 +108,21 @@ public class EntityAIAttackRangedCrossbow<T extends EntityLiving> extends Entity
     
     protected void performCrossbowAttack(float distance) {
         ItemStack stack = ItemStack.EMPTY;
-        for (EnumHand hand : EnumHand.values()) if (entity.getHeldItem(hand).getItem() == CrossbowsContent.CROSSBOW) {
-            stack = entity.getHeldItem(hand);
-            break;
-        }
+        for (EnumHand hand : EnumHand.values())
+            if (entity.getHeldItem(hand).getItem() == CrossbowsContent.CROSSBOW) {
+                stack = entity.getHeldItem(hand);
+                break;
+            }
         if (stack.isEmpty()) return;
-        ItemCrossbow.performShooting(entity.world, entity, stack, distance, (float)(14 - entity.getEntityWorld().getDifficulty().getDifficultyId() * 4));
+        ItemCrossbow.performShooting(entity.world, entity, stack, distance, (float) (14 - entity.getEntityWorld().getDifficulty().getDifficultyId() * 4));
         shootFunction.run();
     }
-
+    
     enum State {
         UNCHARGED,
         CHARGING,
         CHARGED,
         READY_TO_ATTACK;
     }
-
+    
 }

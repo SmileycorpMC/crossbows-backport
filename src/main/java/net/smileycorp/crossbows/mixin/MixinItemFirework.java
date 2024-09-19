@@ -22,7 +22,7 @@ public class MixinItemFirework {
     @Inject(method = "onItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void onItemUse$spawnEntity(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float z, float y_, float x,
                                       CallbackInfoReturnable<EnumActionResult> callback, ItemStack stack, EntityFireworkRocket rocket) {
-        ((IFireworksProjectile)rocket).setOwner(player);
+        ((IFireworksProjectile) rocket).setOwner(player);
     }
     
 }
