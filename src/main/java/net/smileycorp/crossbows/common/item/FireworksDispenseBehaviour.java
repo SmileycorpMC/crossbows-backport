@@ -16,13 +16,12 @@ public class FireworksDispenseBehaviour extends BehaviorProjectileDispense {
     @Override
     public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
         World world = source.getWorld();
-        IPosition iposition = BlockDispenser.getDispensePosition(source);
-        EnumFacing enumfacing = source.getBlockState().getValue(BlockDispenser.FACING);
-        IFireworksProjectile projectile = getProjectileEntity(world, iposition, stack);
-        projectile.shoot(enumfacing.getFrontOffsetX(), enumfacing.getFrontOffsetY(), enumfacing.getFrontOffsetZ(),
+        EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
+        IFireworksProjectile projectile = getProjectileEntity(world, BlockDispenser.getDispensePosition(source), stack);
+        projectile.shoot(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ(),
                 getProjectileVelocity(), getProjectileInaccuracy());
         projectile.setShotAtAngle();
-        world.spawnEntity((Entity)projectile);
+        world.spawnEntity((Entity) projectile);
         stack.shrink(1);
         return stack;
     }

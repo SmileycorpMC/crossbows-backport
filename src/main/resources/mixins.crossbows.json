@@ -4,9 +4,10 @@
   "refmap": "mixins.crossbows.refmap.json",
   "mixins": [
     "MixinDamageSource",
-	"MixinEntityArrow",
+    "MixinEntityArrow",
     "MixinEntityFireworkRocket",
     "MixinEntityLivingBase",
+    "MixinEnumEnchantmentType$BOW",
     "MixinItemFirework"
   ],
   "client": [

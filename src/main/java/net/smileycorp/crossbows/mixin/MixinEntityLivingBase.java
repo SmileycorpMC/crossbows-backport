@@ -11,12 +11,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityLivingBase.class)
 public abstract class MixinEntityLivingBase {
-
-    @Shadow public abstract ItemStack getActiveItemStack();
-
+    
+    @Shadow
+    public abstract ItemStack getActiveItemStack();
+    
     @Inject(method = "onItemUseFinish", at = @At("HEAD"), cancellable = true)
     public void onItemUseFinish(CallbackInfo callback) {
         if (getActiveItemStack().getItem() == CrossbowsContent.CROSSBOW) callback.cancel();
     }
-
+    
 }

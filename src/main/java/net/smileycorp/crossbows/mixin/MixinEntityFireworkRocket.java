@@ -34,22 +34,24 @@ import java.util.UUID;
 @Mixin(EntityFireworkRocket.class)
 public abstract class MixinEntityFireworkRocket extends Entity implements IFireworksProjectile {
     
-    @Shadow protected abstract void dealExplosionDamage();
+    @Shadow
+    protected abstract void dealExplosionDamage();
     
-    @Shadow public abstract boolean isAttachedToEntity();
+    @Shadow
+    public abstract boolean isAttachedToEntity();
     
     private static final DataParameter<Boolean> SHOT_AT_ANGLE = EntityDataManager.createKey(EntityFireworkRocket.class, DataSerializers.BOOLEAN);
     
     private List<Entity> ignoredEntities = Lists.newArrayList();
-
+    
     private UUID ownerUUID;
     private Entity cachedOwner;
     private boolean leftOwner;
-
+    
     public MixinEntityFireworkRocket(World worldIn) {
         super(worldIn);
     }
-
+    
     @Override
     public void setOwner(Entity owner) {
         if (owner != null) {
@@ -57,67 +59,67 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
             cachedOwner = owner;
         }
     }
-
+    
     @Override
     public Entity getOwner() {
         if (cachedOwner != null && !cachedOwner.isAddedToWorld()) {
             return cachedOwner;
         } else if (ownerUUID != null && world instanceof WorldServer) {
-            cachedOwner = ((WorldServer)world).getEntityFromUuid(ownerUUID);
+            cachedOwner = ((WorldServer) world).getEntityFromUuid(ownerUUID);
             return cachedOwner;
         } else {
             return null;
         }
     }
-
+    
     @Override
     public boolean hasOwner() {
         return ownerUUID != null;
     }
-
+    
     @Override
     public boolean isShotAtAngle() {
         return dataManager.get(SHOT_AT_ANGLE);
     }
-
+    
     @Override
     public void setShotAtAngle() {
         dataManager.set(SHOT_AT_ANGLE, true);
     }
-
+    
     @Override
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         float f = MathHelper.sqrt(x * x + y * y + z * z);
-        x = x / (double)f;
-        y = y / (double)f;
-        z = z / (double)f;
-        x = x + rand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-        y = y + rand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-        z = z + rand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-        x = x * (double)velocity;
-        y = y * (double)velocity;
-        z = z * (double)velocity;
+        x = x / (double) f;
+        y = y / (double) f;
+        z = z / (double) f;
+        x = x + rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        y = y + rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        z = z + rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        x = x * (double) velocity;
+        y = y * (double) velocity;
+        z = z * (double) velocity;
         motionX = x;
         motionY = y;
         motionZ = z;
         float f1 = MathHelper.sqrt(x * x + z * z);
-        rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
-        rotationPitch = (float)(MathHelper.atan2(y, f1) * (180D / Math.PI));
+        rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
+        rotationPitch = (float) (MathHelper.atan2(y, f1) * (180D / Math.PI));
         prevRotationYaw = rotationYaw;
         prevRotationPitch = rotationPitch;
     }
-
+    
     @Inject(method = "entityInit", at = @At("HEAD"), cancellable = true)
     public void entityInit(CallbackInfo ci) {
         dataManager.register(SHOT_AT_ANGLE, false);
     }
-
+    
     @Inject(method = "writeEntityToNBT", at = @At("HEAD"), cancellable = true)
     public void writeEntityToNBT(NBTTagCompound compound, CallbackInfo ci) {
         if (ownerUUID != null) compound.setUniqueId("Owner", ownerUUID);
         compound.setBoolean("ShotAtAngle", dataManager.get(SHOT_AT_ANGLE));
     }
-
+    
     @Inject(method = "readEntityFromNBT", at = @At("HEAD"), cancellable = true)
     public void readEntityFromNBT(NBTTagCompound compound, CallbackInfo ci) {
         if (compound.hasKey("Owner")) ownerUUID = compound.getUniqueId("Owner");
@@ -126,11 +128,11 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
     
     @Inject(method = "onUpdate", at = @At("HEAD"))
     public void onUpdate$Head(CallbackInfo ci) {
-       if (!leftOwner && getOwner() != null) {
-           for(EntityLivingBase entity : world.getEntitiesWithinAABB(EntityLivingBase.class, getEntityBoundingBox().grow(1), EntitySelectors.NOT_SPECTATING))
-               if (entity.getLowestRidingEntity() == getOwner().getLowestRidingEntity()) return;
-           leftOwner = true;
-       }
+        if (!leftOwner && getOwner() != null) {
+            for (EntityLivingBase entity : world.getEntitiesWithinAABB(EntityLivingBase.class, getEntityBoundingBox().grow(1), EntitySelectors.NOT_SPECTATING))
+                if (entity.getLowestRidingEntity() == getOwner().getLowestRidingEntity()) return;
+            leftOwner = true;
+        }
     }
     
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/item/EntityFireworkRocket;move(Lnet/minecraft/entity/MoverType;DDD)V"))
@@ -146,7 +148,7 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
     public void onUpdate$sqrt(CallbackInfo callback) {
         if (isAttachedToEntity()) return;
         if (collided) {
-            world.setEntityState(this, (byte)17);
+            world.setEntityState(this, (byte) 17);
             dealExplosionDamage();
             setDead();
             return;
@@ -164,14 +166,14 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
             raytraceresult = new RayTraceResult(entity);
         }
         if (raytraceresult != null && raytraceresult.entityHit instanceof EntityPlayer) {
-            EntityPlayer entityplayer = (EntityPlayer)raytraceresult.entityHit;
-            if (getOwner() instanceof EntityPlayer && !((EntityPlayer)getOwner()).canAttackPlayer(entityplayer)) {
+            EntityPlayer entityplayer = (EntityPlayer) raytraceresult.entityHit;
+            if (getOwner() instanceof EntityPlayer && !((EntityPlayer) getOwner()).canAttackPlayer(entityplayer)) {
                 raytraceresult = null;
             }
         }
         if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
             if (raytraceresult.typeOfHit == RayTraceResult.Type.ENTITY || raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
-                world.setEntityState(this, (byte)17);
+                world.setEntityState(this, (byte) 17);
                 dealExplosionDamage();
                 setDead();
             }
@@ -180,7 +182,8 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
     
     @ModifyArg(method = "dealExplosionDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z"))
     public DamageSource dealExplosionDamage$AttackEntityFrom(DamageSource source) {
-        if (source == DamageSource.FIREWORKS && hasOwner()) ((IFireworksDamage)source).setFireworksEntity((EntityFireworkRocket)(Object)this);
+        if (source == DamageSource.FIREWORKS && hasOwner())
+            ((IFireworksDamage) source).setFireworksEntity((EntityFireworkRocket) (Object) this);
         return source;
     }
     
@@ -205,7 +208,6 @@ public abstract class MixinEntityFireworkRocket extends Entity implements IFirew
                 }
             }
         }
-        
         return entity;
     }
     

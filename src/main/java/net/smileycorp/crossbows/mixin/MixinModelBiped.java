@@ -17,16 +17,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ModelBiped.class)
 public class MixinModelBiped {
-
-    @Shadow public ModelRenderer bipedRightArm;
-    @Shadow public ModelRenderer bipedLeftArm;
-
-    @Shadow public ModelBiped.ArmPose leftArmPose;
-
-    @Shadow public ModelBiped.ArmPose rightArmPose;
-
-    @Shadow public ModelRenderer bipedHead;
-
+    
+    @Shadow
+    public ModelRenderer bipedRightArm;
+    @Shadow
+    public ModelRenderer bipedLeftArm;
+    
+    @Shadow
+    public ModelBiped.ArmPose leftArmPose;
+    
+    @Shadow
+    public ModelBiped.ArmPose rightArmPose;
+    
+    @Shadow
+    public ModelRenderer bipedHead;
+    
     @Inject(method = "setRotationAngles", at = @At("HEAD"), cancellable = true)
     public void setRotationAngles$HEAD(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn, CallbackInfo ci) {
         if (entityIn instanceof EntityPlayer) {
@@ -46,7 +51,7 @@ public class MixinModelBiped {
             }
         }
     }
-
+    
     @Inject(method = "setRotationAngles", at = @At("TAIL"), cancellable = true)
     public void setRotationAngles$TAIL(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn, CallbackInfo ci) {
         if (entityIn instanceof EntityPlayer) {

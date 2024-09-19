@@ -1,6 +1,6 @@
 {
-    "parent": "crossbows:item/crossbow",
-    "textures": {
-        "layer0": "crossbows:item/crossbow_pulling_2"
-    }
+  "parent": "crossbows:item/crossbow",
+  "textures": {
+    "layer0": "crossbows:item/crossbow_pulling_2"
+  }
 }

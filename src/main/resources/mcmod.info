@@ -1,16 +1,18 @@
 [
-{
-  "modid": "crossbows",
-  "name": "Crossbows",
-  "description": "Backports crossbows from 1.14.",
-  "version": "1.1.1",
-  "mcversion": "1.12.2",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["Smileycorp"],
-  "credits": "Sir_Squid1y",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "crossbows",
+    "name": "Crossbows",
+    "description": "Backports crossbows from 1.14.",
+    "version": "1.1.1",
+    "mcversion": "1.12.2",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Smileycorp"
+    ],
+    "credits": "Sir_Squid1y",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]
