@@ -1,4 +1,4 @@
-item.crossbows.Crossbow.name=Crossbow
+item.crossbows.crossbow.name=Crossbow
 item.crossbows.crossbow.projectile=Projectile:
 
 subtitles.crossbows.item.crossbow.charge=Crossbow charges up
