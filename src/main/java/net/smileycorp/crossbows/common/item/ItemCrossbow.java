@@ -3,7 +3,9 @@ package net.smileycorp.crossbows.common.item;
 import com.google.common.collect.Lists;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
@@ -362,6 +365,12 @@ public class ItemCrossbow extends Item {
     
     public static boolean isAmmo(ItemStack stack) {
         return stack.getItem() instanceof ItemArrow || stack.getItem() instanceof ItemFirework;
+    }
+    
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return enchantment.type == CrossbowsContent.CROSSBOW_ENCHANTMENTS || (ConfigHandler.bowEnchantments || enchantment.type == EnumEnchantmentType.BOW)
+                || enchantment.type.canEnchantItem(this);
     }
     
 }
