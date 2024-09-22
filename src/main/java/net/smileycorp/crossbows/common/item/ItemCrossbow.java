@@ -85,7 +85,8 @@ public class ItemCrossbow extends Item {
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
         int duration = getMaxItemUseDuration(stack) - timeLeft;
         float charge = entity instanceof EntityPlayer ? getPowerForTime(duration, stack) : 1f;
-        if (charge < 1.0F || isCharged(stack) && tryLoadProjectiles(entity, stack)) return;
+        if (charge < 1 || isCharged(stack)) return;
+        if (!tryLoadProjectiles(entity, stack)) return;
         setCharged(stack, true);
         world.playSound(null, entity.posX, entity.posX, entity.posZ, Constants.CROSSBOW_LOADING_END, entity.getSoundCategory(), 1, 1f / (world.rand.nextFloat() * 0.5f + 1) + 0.2f);
     }
@@ -93,7 +94,7 @@ public class ItemCrossbow extends Item {
     private boolean tryLoadProjectiles(EntityLivingBase entity, ItemStack stack) {
         int i = EnchantmentHelper.getEnchantmentLevel(CrossbowsContent.MULTISHOT, stack);
         int j = i == 0 ? 1 : 3;
-        boolean creative = entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode;
+        boolean creative = entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative();
         ItemStack itemstack = getProjectile(entity);
         ItemStack itemstack1 = itemstack.copy();
         for (int k = 0; k < j; ++k) {
@@ -102,18 +103,17 @@ public class ItemCrossbow extends Item {
                 itemstack = new ItemStack(Items.ARROW);
                 itemstack1 = itemstack.copy();
             }
-            if (!loadProjectile(entity, stack, itemstack, k > 0, creative)) return false;
+            if (!loadProjectile(entity, stack, itemstack, k > 0 || creative || itemstack1.getItem() == Items.ARROW &&
+                    EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0)) return false;
         }
         return true;
     }
     
-    private boolean loadProjectile(EntityLivingBase entity, ItemStack stack, ItemStack ammo, boolean consumed, boolean creative) {
+    private boolean loadProjectile(EntityLivingBase entity, ItemStack stack, ItemStack ammo, boolean dontConsume) {
         if (ammo.isEmpty()) return false;
         else {
-            boolean dontConsume = (creative && ammo.getItem() instanceof ItemArrow) || (ConfigHandler.bowEnchantments && ammo.getItem() == Items.ARROW
-                    && EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0);
             ItemStack itemstack;
-            if (!dontConsume && !creative && !consumed) {
+            if (!dontConsume) {
                 itemstack = ammo.splitStack(1);
                 if (ammo.isEmpty() && entity instanceof EntityPlayer)
                     ((EntityPlayer) entity).inventory.deleteStack(ammo);
