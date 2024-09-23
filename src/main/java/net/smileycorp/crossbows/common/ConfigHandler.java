@@ -21,7 +21,7 @@ public class ConfigHandler {
         durability = config.getInt("durability", "crossbow", 265, 0, Integer.MAX_VALUE, "How much durability do crossbows have?");
         drawSpeed = config.getInt("drawSpeed", "crossbow", 25, 0, Integer.MAX_VALUE, "How many ticks does it take to pull back a crossbow?");
         damage = config.getFloat("damage", "crossbow", 1, 0, Integer.MAX_VALUE, "Base damage of crossbow arrows in hearts.");
-        damage = config.getFloat("enchantability", "crossbow", 1, 0, Integer.MAX_VALUE, "How enchantable are crossbows in the enchanting table?");
+        enchantability = config.getInt("enchantability", "crossbow", 1, 0, Integer.MAX_VALUE, "How enchantable are crossbows in the enchanting table?");
         bowEnchantments = config.getBoolean("bowEnchantments", "crossbow", false, "Can crossbows be enchanted with bow enchantments?");
         
         dispenserFireworks = config.getBoolean("dispenserFireworks", "general", true, "Should fireworks use their 1.15+ behaviour in dispensers?");

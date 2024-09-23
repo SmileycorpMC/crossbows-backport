@@ -367,10 +367,4 @@ public class ItemCrossbow extends Item {
         return stack.getItem() instanceof ItemArrow || stack.getItem() instanceof ItemFirework;
     }
     
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment.type == CrossbowsContent.CROSSBOW_ENCHANTMENTS || (ConfigHandler.bowEnchantments || enchantment.type == EnumEnchantmentType.BOW)
-                || enchantment.type.canEnchantItem(this);
-    }
-    
 }
