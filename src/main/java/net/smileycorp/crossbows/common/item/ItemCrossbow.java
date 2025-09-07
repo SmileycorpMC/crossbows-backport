@@ -56,12 +56,12 @@ public class ItemCrossbow extends Item {
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.COMBAT);
         setMaxDamage(durability);
-        addPropertyOverride(new ResourceLocation(modid, "pull"), (stack, worldIn, entityIn) -> entityIn == null || isCharged(stack) ? 0 :
-                (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / ((float) getChargeDuration(stack)));
-        addPropertyOverride(new ResourceLocation(modid, "pulling"), (stack, worldIn, entityIn) ->
-                entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack && !isCharged(stack) ? 1 : 0);
-        addPropertyOverride(new ResourceLocation(modid, "charged"), (stack, worldIn, entityIn) -> isCharged(stack) ? 1 : 0);
-        addPropertyOverride(new ResourceLocation(modid, "firework"), (stack, worldIn, entityIn) -> containsChargedProjectile(stack, Items.FIREWORKS) ? 1 : 0);
+        addPropertyOverride(new ResourceLocation(modid, "pull"), (stack, world, entity) -> entity == null || isCharged(stack) ? 0 :
+                (float) (stack.getMaxItemUseDuration() - entity.getItemInUseCount()) / ((float) getChargeDuration(stack)));
+        addPropertyOverride(new ResourceLocation(modid, "pulling"), (stack, world, entity) ->
+                entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack && !isCharged(stack) ? 1 : 0);
+        addPropertyOverride(new ResourceLocation(modid, "charged"), (stack, world, entity) -> isCharged(stack) ? 1 : 0);
+        addPropertyOverride(new ResourceLocation(modid, "firework"), (stack, world, entity) -> containsChargedProjectile(stack, Items.FIREWORKS) ? 1 : 0);
     }
     
     @Override
