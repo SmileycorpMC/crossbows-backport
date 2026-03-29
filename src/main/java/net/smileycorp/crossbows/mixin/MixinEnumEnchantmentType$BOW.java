@@ -2,7 +2,7 @@ package net.smileycorp.crossbows.mixin;
 
 import net.minecraft.item.Item;
 import net.smileycorp.crossbows.common.ConfigHandler;
-import net.smileycorp.crossbows.common.item.ItemCrossbow;
+import net.smileycorp.crossbows.api.item.ItemCrossbow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
-import net.smileycorp.crossbows.common.item.ItemCrossbow;
+import net.smileycorp.crossbows.api.item.ItemCrossbow;
 
 public class CrossbowAnimator {
     

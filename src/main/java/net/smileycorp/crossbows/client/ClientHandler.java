@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.smileycorp.crossbows.common.CrossbowsContent;
-import net.smileycorp.crossbows.common.item.ItemCrossbow;
+import net.smileycorp.crossbows.api.item.ItemCrossbow;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientHandler {

@@ -1,4 +1,4 @@
-package net.smileycorp.crossbows.common.item;
+package net.smileycorp.crossbows.common;
 
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;

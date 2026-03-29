@@ -12,7 +12,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentMultishot;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentPiercing;
 import net.smileycorp.crossbows.common.enchantment.EnchantmentQuickCharge;
-import net.smileycorp.crossbows.common.item.ItemCrossbow;
+import net.smileycorp.crossbows.api.item.ItemCrossbow;
 
 @EventBusSubscriber(modid = Constants.MODID)
 public class CrossbowsContent {

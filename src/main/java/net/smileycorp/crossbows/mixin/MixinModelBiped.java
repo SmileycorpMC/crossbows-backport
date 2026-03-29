@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.smileycorp.crossbows.client.CrossbowAnimator;
 import net.smileycorp.crossbows.common.CrossbowsContent;
-import net.smileycorp.crossbows.common.item.ItemCrossbow;
+import net.smileycorp.crossbows.api.item.ItemCrossbow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

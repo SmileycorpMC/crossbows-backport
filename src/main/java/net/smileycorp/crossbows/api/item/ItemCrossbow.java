@@ -1,4 +1,4 @@
-package net.smileycorp.crossbows.common.item;
+package net.smileycorp.crossbows.api.item;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.util.ITooltipFlag;

@@ -6,7 +6,6 @@ import net.minecraft.init.Items;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.smileycorp.crossbows.common.item.FireworksDispenseBehaviour;
 
 public class CommonProxy {
     
